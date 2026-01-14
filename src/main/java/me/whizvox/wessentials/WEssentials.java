@@ -1,6 +1,9 @@
 package me.whizvox.wessentials;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import me.whizvox.wessentials.module.chat.ChatModule;
+import me.whizvox.wessentials.module.chat.EmptyPrefixSuffixProvider;
+import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
 import me.whizvox.wessentials.module.nick.Nickname;
 import me.whizvox.wessentials.module.nick.NicknameModule;
 import me.whizvox.wessentials.module.teleport.TeleportRequestModule;
@@ -25,6 +28,7 @@ public final class WEssentials extends JavaPlugin {
     private final TeleportRequestModule teleports;
     private final WarpModule warps;
     private final NicknameModule nicknames;
+    private ChatModule chat;
 
     public WEssentials() {
         instance = this;
@@ -32,25 +36,37 @@ public final class WEssentials extends JavaPlugin {
         teleports = new TeleportRequestModule();
         warps = new WarpModule();
         nicknames = new NicknameModule();
+        chat = null;
     }
 
     public void reload() {
+        // Data folder
         if (!getDataFolder().exists() && !getDataFolder().mkdirs()) {
             getLogger().log(Level.SEVERE, "Could not create data folder at {}", getDataFolder());
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        // Messages
         File messagesFile = new File(getDataFolder(), "messages.yml");
         if (!messagesFile.exists()) {
             saveResource("messages.yml", false);
         }
         Configuration messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
         messages.load(messagesConfig);
+        // Chat
+        File chatFile = new File(getDataFolder(), "chat.yml");
+        if (!chatFile.exists()) {
+            saveResource("chat.yml", false);
+        }
+        Configuration chatConfig = YamlConfiguration.loadConfiguration(chatFile);
+        chat.load(chatConfig);
+        // Warps
         File warpsFile = new File(getDataFolder(), "warps.yml");
         if (warpsFile.exists()) {
             Configuration warpsConfig = YamlConfiguration.loadConfiguration(warpsFile);
             warps.load(warpsConfig);
         }
+        // Nicknames
         File nicknamesFile = new File(getDataFolder(), "nicknames.yml");
         if (nicknamesFile.exists()) {
             Configuration nicknamesConfig = YamlConfiguration.loadConfiguration(nicknamesFile);
@@ -65,6 +81,18 @@ public final class WEssentials extends JavaPlugin {
             commands -> WEssentialsCommands.registerAll(commands.registrar()));
         getServer().getAsyncScheduler().runAtFixedRate(this, $ -> teleports.removeInvalid(), 1000, 10, TimeUnit.SECONDS);
         getServer().getPluginManager().registerEvents(new WEssentialsEventListener(), this);
+        if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+            try {
+                chat = new ChatModule(new LuckPermsPrefixSuffixProvider());
+                getLogger().info("Loaded LuckPerms prefix/suffix provider");
+            } catch (Exception e) {
+                chat = new ChatModule(new EmptyPrefixSuffixProvider());
+                getLogger().log(Level.SEVERE, "Could not load LuckPerms prefix/suffix provider", e);
+            }
+        } else {
+            chat = new ChatModule(new EmptyPrefixSuffixProvider());
+        }
+        getServer().getPluginManager().registerEvents(chat, this);
         reload();
     }
 

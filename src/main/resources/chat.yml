@@ -1,0 +1,5 @@
+format:
+  player: '<prefix><player><suffix>'
+  chat: '<player> <bold>»</bold> <gray><message></gray>'
+  join: '<player> <green>has joined the server</green>'
+  leave: '<player> <yellow>has left the server</yellow>'
