@@ -1,7 +1,8 @@
 package me.whizvox.wessentials;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import me.whizvox.wessentials.module.NicknameModule;
+import me.whizvox.wessentials.module.nick.Nickname;
+import me.whizvox.wessentials.module.nick.NicknameModule;
 import me.whizvox.wessentials.module.teleport.TeleportRequestModule;
 import me.whizvox.wessentials.module.warp.WarpModule;
 import net.kyori.adventure.text.Component;
@@ -9,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -58,9 +60,11 @@ public final class WEssentials extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        ConfigurationSerialization.registerClass(Nickname.class);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             commands -> WEssentialsCommands.registerAll(commands.registrar()));
         getServer().getAsyncScheduler().runAtFixedRate(this, $ -> teleports.removeInvalid(), 1000, 10, TimeUnit.SECONDS);
+        getServer().getPluginManager().registerEvents(new WEssentialsEventListener(), this);
         reload();
     }
 
