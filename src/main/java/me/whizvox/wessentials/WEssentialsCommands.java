@@ -2,6 +2,9 @@ package me.whizvox.wessentials;
 
 import io.papermc.paper.command.brigadier.Commands;
 import me.whizvox.wessentials.command.WEssentialsCommand;
+import me.whizvox.wessentials.command.nick.ClearNicknameCommand;
+import me.whizvox.wessentials.command.nick.SetOtherNicknameCommand;
+import me.whizvox.wessentials.command.nick.SetOwnNicknameCommand;
 import me.whizvox.wessentials.command.teleport.*;
 import me.whizvox.wessentials.command.warp.DeleteWarpCommand;
 import me.whizvox.wessentials.command.warp.SetWarpCommand;
@@ -14,6 +17,9 @@ public class WEssentialsCommands {
 
     private static final List<ModuleCommand> commands = List.of(
         new WEssentialsCommand(),
+        new SetOwnNicknameCommand(),
+        new SetOtherNicknameCommand(),
+        new ClearNicknameCommand(),
         new TeleportAskCommand(),
         new TeleportHereCommand(),
         new TeleportAcceptCommand(),

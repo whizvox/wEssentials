@@ -1,6 +1,7 @@
 package me.whizvox.wessentials;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import me.whizvox.wessentials.module.NicknameModule;
 import me.whizvox.wessentials.module.teleport.TeleportRequestModule;
 import me.whizvox.wessentials.module.warp.WarpModule;
 import net.kyori.adventure.text.Component;
@@ -21,12 +22,14 @@ public final class WEssentials extends JavaPlugin {
     private final Messages messages;
     private final TeleportRequestModule teleports;
     private final WarpModule warps;
+    private final NicknameModule nicknames;
 
     public WEssentials() {
         instance = this;
         messages = new Messages();
         teleports = new TeleportRequestModule();
         warps = new WarpModule();
+        nicknames = new NicknameModule();
     }
 
     public void reload() {
@@ -45,6 +48,11 @@ public final class WEssentials extends JavaPlugin {
         if (warpsFile.exists()) {
             Configuration warpsConfig = YamlConfiguration.loadConfiguration(warpsFile);
             warps.load(warpsConfig);
+        }
+        File nicknamesFile = new File(getDataFolder(), "nicknames.yml");
+        if (nicknamesFile.exists()) {
+            Configuration nicknamesConfig = YamlConfiguration.loadConfiguration(nicknamesFile);
+            nicknames.load(nicknamesConfig);
         }
     }
 
@@ -73,8 +81,11 @@ public final class WEssentials extends JavaPlugin {
         return warps;
     }
 
+    public NicknameModule getNicknames() {
+        return nicknames;
+    }
+
     public void saveWarps() {
-        saveConfig();
         File warpsFile = new File(getDataFolder(), "warps.yml");
         FileConfiguration warpsConfig = new YamlConfiguration();
         warps.save(warpsConfig);
@@ -82,6 +93,17 @@ public final class WEssentials extends JavaPlugin {
             warpsConfig.save(warpsFile);
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "Could not save warps file: " + warpsFile, e);
+        }
+    }
+
+    public void saveNicknames() {
+        File file = new File(getDataFolder(), "nicknames.yml");
+        FileConfiguration config = new YamlConfiguration();
+        nicknames.save(config);
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Could not save nicknames file: " + file, e);
         }
     }
 
