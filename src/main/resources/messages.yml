@@ -1,0 +1,39 @@
+locale: en-US
+message:
+  teleport:
+    expired: <red>Teleport request with <player> has expired.</red>
+    offline: <red>Could not complete teleport request, <player> is offline.</red>
+    noRequestPlayer: <red>No teleport request found with <player>.</red>
+    noRequest: <red>No teleport request found.</red>
+    hasRequest: <red>You already have a teleport request with <player>.</red>
+    notSelf: <red>Cannot teleport to yourself.</red>
+    cannotSend: <red>Cannot send a request to <player>.</red>
+    success:
+      from: <green><player> is teleporting to you now.</green>
+      to: <green>Successfully teleported to <player>.</green>
+    deny:
+      receiver: <green>Denied teleport request from <player>.</green>
+      sender: <gold>Teleport request to <player> has been denied.</gold>
+    cancel:
+      receiver: <gold>Teleport request from <player> has been cancelled.</gold>
+      sender: <gold>Cancelled teleport request to <player>.</gold>
+      offline: <gold>Teleport request cancelled, <player> is offline.</gold>
+    request:
+      receiver:
+        toSender: <aqua><player> is requesting you to teleport to them. <remaining></aqua>
+        toReceiver: <aqua><player> is requesting to teleport to you. <remaining></aqua>
+        remaining: Type <bold><green>/tpaccept</green></bold> to accept, or <bold><red>/tpdeny</red></bold> to deny. You have <gold>60 seconds</gold> to respond.
+      sender: <green>Successfully sent a teleport request to <player>.</green>
+  warp:
+    nameConflict: <red>There already exists a warp named <yellow><warp></yellow>.</red>
+    set: <green>Warp <yellow><warp></yellow> successfully created.</green>
+    teleport: <green>Successfully warped to <yellow><warp></yellow>.</green>
+    delete: <green>Warp <yellow><warp></yellow> has been deleted.</green>
+  pluginName: <bold><light_purple>[</light_purple></bold><dark_purple>w</dark_purple><light_purple>Essentials</light_purple><bold><dark_purple>]</dark_purple></bold>
+  reload: <plugin_name> Finished reloading configurations and messages.
+  version: '<plugin_name> Version: <yellow><version></yellow>'
+exception:
+  warp:
+    notFound: 'Warp not found: %s'
+    invalidName: 'Invalid warp name: %s'
+  unknownWorld: 'Unknown world: %s'

@@ -1,4 +1,4 @@
-package me.whizvox.wessentials.command.tp;
+package me.whizvox.wessentials.command.teleport;
 
 public class TeleportDenyCommand extends TeleportResponseBaseCommand {
 

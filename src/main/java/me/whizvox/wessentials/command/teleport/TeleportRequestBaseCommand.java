@@ -1,4 +1,4 @@
-package me.whizvox.wessentials.command.tp;
+package me.whizvox.wessentials.command.teleport;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

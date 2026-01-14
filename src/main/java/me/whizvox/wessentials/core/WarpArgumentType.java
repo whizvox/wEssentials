@@ -12,15 +12,14 @@ import me.whizvox.wessentials.WEssentials;
 import me.whizvox.wessentials.exception.WECommandExceptions;
 import me.whizvox.wessentials.module.warp.WarpLocation;
 import org.bukkit.Location;
-import org.bukkit.permissions.Permissible;
 import org.jetbrains.annotations.NotNullByDefault;
 
 import java.util.concurrent.CompletableFuture;
 
 @NotNullByDefault
-public class WarpCommandArgumentType implements CustomArgumentType.Converted<WarpLocation, String> {
+public class WarpArgumentType implements CustomArgumentType.Converted<WarpLocation, String> {
 
-    private WarpCommandArgumentType() {
+    private WarpArgumentType() {
     }
 
     @Override
@@ -49,8 +48,8 @@ public class WarpCommandArgumentType implements CustomArgumentType.Converted<War
         return StringArgumentType.word();
     }
 
-    public static WarpCommandArgumentType warp() {
-        return new WarpCommandArgumentType();
+    public static WarpArgumentType warp() {
+        return new WarpArgumentType();
     }
 
     public static WarpLocation getWarp(CommandContext<?> context, String name) {

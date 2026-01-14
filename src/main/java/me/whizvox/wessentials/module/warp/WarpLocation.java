@@ -1,4 +1,4 @@
-package me.whizvox.wessentials.command.warp;
+package me.whizvox.wessentials.module.warp;
 
 import org.bukkit.Location;
 

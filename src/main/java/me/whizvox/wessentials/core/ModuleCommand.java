@@ -4,28 +4,42 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class CommandModule {
+public abstract class ModuleCommand {
 
+    private final @Nullable String module;
     private final String command;
-    private final Permission permission;
+    private final @Nullable Permission permission;
 
-    public CommandModule(String command, Permission permission) {
+    public ModuleCommand(@Nullable String module, String command, @Nullable Permission permission) {
+        this.module = module;
         this.command = command;
         this.permission = permission;
     }
 
-    public CommandModule(String command, String permissionBase) {
-        this(command, new Permission("wessentials.command." + permissionBase));
+    public ModuleCommand(String module, String command, @Nullable String permissionBase) {
+        this(module, command, permissionBase == null ? null : new Permission("wessentials.command." + permissionBase));
     }
 
-    public CommandModule(String command) {
-        this(command, command);
+    public ModuleCommand(String module, String command) {
+        this(module, command, command);
+    }
+
+    public @Nullable String getModule() {
+        return module;
+    }
+
+    public boolean hasPermission(CommandSourceStack source) {
+        if (permission == null) {
+            return true;
+        }
+        return source.getSender().hasPermission(permission);
     }
 
     public void register(Commands registrar) {
         LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal(command)
-            .requires(source -> source.getSender().hasPermission(permission));
+                .requires(this::hasPermission);
         register(builder);
         registrar.register(builder.build());
     }
