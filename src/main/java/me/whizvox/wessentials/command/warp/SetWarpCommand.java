@@ -14,7 +14,6 @@ import me.whizvox.wessentials.core.ModuleCommand;
 import me.whizvox.wessentials.core.WorldArgumentType;
 import me.whizvox.wessentials.exception.WECommandExceptions;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

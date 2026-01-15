@@ -5,6 +5,7 @@ import me.whizvox.wessentials.command.WEssentialsCommand;
 import me.whizvox.wessentials.command.home.ClearHomeCommand;
 import me.whizvox.wessentials.command.home.SetHomeCommand;
 import me.whizvox.wessentials.command.home.TeleportHomeCommand;
+import me.whizvox.wessentials.command.kit.*;
 import me.whizvox.wessentials.command.nick.ClearNicknameCommand;
 import me.whizvox.wessentials.command.nick.SetOtherNicknameCommand;
 import me.whizvox.wessentials.command.nick.SetOwnNicknameCommand;
@@ -19,18 +20,29 @@ import java.util.List;
 public class WEssentialsCommands {
 
     private static final List<ModuleCommand> commands = List.of(
+        // plugin command
         new WEssentialsCommand(),
+        // home commands
         new TeleportHomeCommand(),
         new SetHomeCommand(),
         new ClearHomeCommand(),
+        // kit commands
+        new GiveKitCommand(),
+        new CreateKitCommand(),
+        new EditKitCommand(),
+        new DeleteKitCommand(),
+        new ClearKitCooldownCommand(),
+        // nickname commands
         new SetOwnNicknameCommand(),
         new SetOtherNicknameCommand(),
         new ClearNicknameCommand(),
+        // teleport request commands
         new TeleportAskCommand(),
         new TeleportHereCommand(),
         new TeleportAcceptCommand(),
         new TeleportDenyCommand(),
         new TeleportCancelCommand(),
+        // warp commands
         new SetWarpCommand(),
         new WarpCommand(),
         new DeleteWarpCommand()

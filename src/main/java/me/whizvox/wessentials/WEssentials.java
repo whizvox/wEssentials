@@ -6,6 +6,10 @@ import me.whizvox.wessentials.module.chat.EmptyPrefixSuffixProvider;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
 import me.whizvox.wessentials.module.home.Home;
 import me.whizvox.wessentials.module.home.HomeModule;
+import me.whizvox.wessentials.module.kit.Kit;
+import me.whizvox.wessentials.module.kit.KitCooldown;
+import me.whizvox.wessentials.module.kit.KitModule;
+import me.whizvox.wessentials.module.kit.SlottedItem;
 import me.whizvox.wessentials.module.nick.Nickname;
 import me.whizvox.wessentials.module.nick.NicknameModule;
 import me.whizvox.wessentials.module.teleport.TeleportRequestModule;
@@ -32,6 +36,7 @@ public final class WEssentials extends JavaPlugin {
     private final NicknameModule nicknames;
     private ChatModule chat;
     private final HomeModule homes;
+    private final KitModule kits;
 
     public WEssentials() {
         instance = this;
@@ -41,6 +46,7 @@ public final class WEssentials extends JavaPlugin {
         nicknames = new NicknameModule();
         chat = null;
         homes = new HomeModule(this);
+        kits = new KitModule(this);
     }
 
     public void reload() {
@@ -78,12 +84,17 @@ public final class WEssentials extends JavaPlugin {
         }
         // Homes
         homes.load();
+        // Kits
+        kits.load();
     }
 
     @Override
     public void onEnable() {
         ConfigurationSerialization.registerClass(Nickname.class);
         ConfigurationSerialization.registerClass(Home.class);
+        ConfigurationSerialization.registerClass(SlottedItem.class);
+        ConfigurationSerialization.registerClass(Kit.class);
+        ConfigurationSerialization.registerClass(KitCooldown.class);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             commands -> WEssentialsCommands.registerAll(commands.registrar()));
         getServer().getAsyncScheduler().runAtFixedRate(this, $ -> teleports.removeInvalid(), 1000, 10, TimeUnit.SECONDS);
@@ -126,6 +137,10 @@ public final class WEssentials extends JavaPlugin {
 
     public HomeModule getHomes() {
         return homes;
+    }
+
+    public KitModule getKits() {
+        return kits;
     }
 
     public void saveWarps() {

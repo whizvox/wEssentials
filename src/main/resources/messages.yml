@@ -8,6 +8,24 @@ message:
     clearOther: <green>Home location has been cleared for <player>.</green>
     teleport: <green>Teleporting to your home...</green>
     teleportOther: <green>Teleporting to <player>'s home...</green>
+  kit:
+    conflict: <red>There already exists a kit named <kit>.</red>
+    create: <green>Kit <reset><kit><green> successfully created.</green>
+    cooldown: <gold>You must wait <cooldown> seconds until you can get that kit again.</gold>
+    cooldownOther: <gold>You must wait <cooldown> seconds until you can give <player> that kit.</gold>
+    give: <green>You have been given the <reset><kit><green> kit.</green>
+    giveOther: <green>You have given <player> the <reset><kit><green> kit.</green>
+    update: <green>Kit has been updated.</green>
+    clearCooldown:
+      none: <gold>No cooldown to remove.</gold>
+      all:
+        receiver: <green>All kit cooldowns have been cleared.</green>
+        sender: <green>All kit cooldowns for <player> have been cleared.</green>
+      self: <green>Cooldown for <kit> has been cleared.</green>
+      other: <green>Cleared <player>'s cooldown for <kit>.</green>
+    delete:
+      success: <green>Kit deleted.</green>
+      fail: <gold>Could not delete kit. The caches might be out of sync. Try running <yellow>/wessentials reload</yellow>.</gold>
   nick:
     set: <green>Nickname has been changed to <reset><nick><green>.</green>
     setOther: <green>Nickname for <yellow><player></yellow> has been set to <reset><nick><green>.</green>
@@ -48,6 +66,9 @@ message:
   reload: <plugin_name> Finished reloading configurations and messages.
   version: '<plugin_name> Version: <yellow><version></yellow>'
 exception:
+  kit:
+    invalidName: 'Invalid kit name: %s'
+    unknown: 'Unknown kit: %s'
   warp:
     notFound: 'Warp not found: %s'
     invalidName: 'Invalid warp name: %s'
