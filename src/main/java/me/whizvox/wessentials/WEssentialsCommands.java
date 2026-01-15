@@ -1,6 +1,7 @@
 package me.whizvox.wessentials;
 
 import io.papermc.paper.command.brigadier.Commands;
+import me.whizvox.wessentials.command.BackCommand;
 import me.whizvox.wessentials.command.WEssentialsCommand;
 import me.whizvox.wessentials.command.extra.CenterCommand;
 import me.whizvox.wessentials.command.extra.TopCommand;
@@ -24,6 +25,8 @@ public class WEssentialsCommands {
     private static final List<ModuleCommand> commands = List.of(
         // plugin command
         new WEssentialsCommand(),
+        // back command
+        new BackCommand(),
         // home commands
         new TeleportHomeCommand(),
         new SetHomeCommand(),

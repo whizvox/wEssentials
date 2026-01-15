@@ -1,6 +1,7 @@
 package me.whizvox.wessentials;
 
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import me.whizvox.wessentials.module.BackModule;
 import me.whizvox.wessentials.module.chat.ChatModule;
 import me.whizvox.wessentials.module.chat.EmptyPrefixSuffixProvider;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
@@ -37,6 +38,7 @@ public final class WEssentials extends JavaPlugin {
     private ChatModule chat;
     private final HomeModule homes;
     private final KitModule kits;
+    private final BackModule back;
 
     public WEssentials() {
         instance = this;
@@ -47,6 +49,7 @@ public final class WEssentials extends JavaPlugin {
         chat = null;
         homes = new HomeModule(this);
         kits = new KitModule(this);
+        back = new BackModule(this);
     }
 
     public void reload() {
@@ -86,6 +89,8 @@ public final class WEssentials extends JavaPlugin {
         homes.load();
         // Kits
         kits.load();
+        // Back
+        back.load();
     }
 
     @Override
@@ -141,6 +146,10 @@ public final class WEssentials extends JavaPlugin {
 
     public KitModule getKits() {
         return kits;
+    }
+
+    public BackModule getBack() {
+        return back;
     }
 
     public void saveWarps() {

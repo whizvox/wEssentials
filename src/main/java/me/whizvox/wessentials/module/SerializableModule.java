@@ -3,6 +3,7 @@ package me.whizvox.wessentials.module;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
@@ -17,12 +18,14 @@ public abstract class SerializableModule {
     private final Plugin plugin;
     private final String configFileName;
     private final boolean saveIfNotExist;
+    private boolean firstLoad;
     protected @Nullable File file;
 
     public SerializableModule(Plugin plugin, String configFileName, boolean saveIfNotExist) {
         this.plugin = plugin;
         this.configFileName = configFileName;
         this.saveIfNotExist = saveIfNotExist;
+        firstLoad = true;
         file = null;
     }
 
@@ -33,6 +36,12 @@ public abstract class SerializableModule {
     }
 
     public void load() {
+        if (firstLoad) {
+            firstLoad = false;
+            if (this instanceof Listener listener) {
+                plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+            }
+        }
         initializeFile();
         //noinspection DataFlowIssue
         if (!file.exists()) {

@@ -92,10 +92,18 @@ public class TeleportRequestModule {
             }
             if (doTeleport) {
                 if (found.toSender()) {
+                    if (receiver.hasPermission(WEssentials.inst().getBack().tpaPermission)) {
+                        WEssentials.inst().getBack().setLocation(receiver, receiver.getLocation());
+                        WEssentials.inst().getBack().save();
+                    }
                     receiver.teleport(found.sender(), PlayerTeleportEvent.TeleportCause.COMMAND);
                     receiver.sendMessage(WEssentials.translate("message.teleport.success.to", Map.of("player", found.sender().displayName())));
                     found.sender().sendMessage(WEssentials.translate("message.teleport.success.from", Map.of("player", receiver.displayName())));
                 } else {
+                    if (found.sender().hasPermission(WEssentials.inst().getBack().tpaPermission)) {
+                        WEssentials.inst().getBack().setLocation(found.sender(), found.sender().getLocation());
+                        WEssentials.inst().getBack().save();
+                    }
                     found.sender().teleport(receiver, PlayerTeleportEvent.TeleportCause.COMMAND);
                     receiver.sendMessage(WEssentials.translate("message.teleport.success.from", Map.of("player", found.sender().displayName())));
                     found.sender().sendMessage(WEssentials.translate("message.teleport.success.to", Map.of("player", receiver.displayName())));

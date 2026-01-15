@@ -1,5 +1,8 @@
 locale: en-US
 message:
+  back:
+    noLocation: <gold>There is nowhere to teleport back to.</gold>
+    fail: <gold>Could not teleport to previous location. Do you have any passengers?</gold>
   home:
     notSet: <red>Home is not set.</red>
     set: <green>Home location has been set.</green>

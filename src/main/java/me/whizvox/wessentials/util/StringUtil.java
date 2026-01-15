@@ -22,4 +22,22 @@ public class StringUtil {
         return DATE_TIME_FORMATTER.format(ldt);
     }
 
+    public static String snakeToCamelCase(String str) {
+        StringBuilder sb = new StringBuilder();
+        boolean uppercaseNext = false;
+        for (char c : str.toCharArray()) {
+            if (c == '_') {
+                uppercaseNext = true;
+            } else {
+                if (uppercaseNext) {
+                    sb.append(Character.toUpperCase(c));
+                    uppercaseNext = false;
+                } else {
+                    sb.append(Character.toLowerCase(c));
+                }
+            }
+        }
+        return sb.toString();
+    }
+
 }
