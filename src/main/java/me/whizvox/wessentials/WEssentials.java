@@ -4,6 +4,8 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.whizvox.wessentials.module.chat.ChatModule;
 import me.whizvox.wessentials.module.chat.EmptyPrefixSuffixProvider;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
+import me.whizvox.wessentials.module.home.Home;
+import me.whizvox.wessentials.module.home.HomeModule;
 import me.whizvox.wessentials.module.nick.Nickname;
 import me.whizvox.wessentials.module.nick.NicknameModule;
 import me.whizvox.wessentials.module.teleport.TeleportRequestModule;
@@ -29,6 +31,7 @@ public final class WEssentials extends JavaPlugin {
     private final WarpModule warps;
     private final NicknameModule nicknames;
     private ChatModule chat;
+    private final HomeModule homes;
 
     public WEssentials() {
         instance = this;
@@ -37,6 +40,7 @@ public final class WEssentials extends JavaPlugin {
         warps = new WarpModule();
         nicknames = new NicknameModule();
         chat = null;
+        homes = new HomeModule(this);
     }
 
     public void reload() {
@@ -72,11 +76,14 @@ public final class WEssentials extends JavaPlugin {
             Configuration nicknamesConfig = YamlConfiguration.loadConfiguration(nicknamesFile);
             nicknames.load(nicknamesConfig);
         }
+        // Homes
+        homes.load();
     }
 
     @Override
     public void onEnable() {
         ConfigurationSerialization.registerClass(Nickname.class);
+        ConfigurationSerialization.registerClass(Home.class);
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
             commands -> WEssentialsCommands.registerAll(commands.registrar()));
         getServer().getAsyncScheduler().runAtFixedRate(this, $ -> teleports.removeInvalid(), 1000, 10, TimeUnit.SECONDS);
@@ -115,6 +122,10 @@ public final class WEssentials extends JavaPlugin {
 
     public NicknameModule getNicknames() {
         return nicknames;
+    }
+
+    public HomeModule getHomes() {
+        return homes;
     }
 
     public void saveWarps() {

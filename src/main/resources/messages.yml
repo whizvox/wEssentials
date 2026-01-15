@@ -1,5 +1,13 @@
 locale: en-US
 message:
+  home:
+    notSet: <red>Home is not set.</red>
+    set: <green>Home location has been set.</green>
+    setOther: <green>Home location has been set for <player>.</green>
+    clear: <green>Home location has been cleared.</green>
+    clearOther: <green>Home location has been cleared for <player>.</green>
+    teleport: <green>Teleporting to your home...</green>
+    teleportOther: <green>Teleporting to <player>'s home...</green>
   nick:
     set: <green>Nickname has been changed to <reset><nick><green>.</green>
     setOther: <green>Nickname for <yellow><player></yellow> has been set to <reset><nick><green>.</green>
