@@ -36,7 +36,8 @@ public class KitModule extends SerializableModule {
     private void removeExpiredCooldowns() {
         LocalDateTime now = LocalDateTime.now();
         List<CooldownKey> toRemove = cooldowns.keySet().stream()
-            .filter(key -> now.isAfter(cooldowns.get(key)))
+            // remove if expiration datetime has passed or the kit associated with the cooldown no longer exists
+            .filter(key -> now.isAfter(cooldowns.get(key)) || !kits.containsKey(key.kit))
             .toList();
         toRemove.forEach(cooldowns::remove);
     }
@@ -152,14 +153,17 @@ public class KitModule extends SerializableModule {
         }
         if (nameUpdated) {
             List<KitCooldown> newCooldowns = new ArrayList<>();
+            List<CooldownKey> toRemove = new ArrayList<>();
             cooldowns.forEach((key, expires) -> {
                 if (key.kit.equals(oldKit.name())) {
                     newCooldowns.add(new KitCooldown(key.player, newKit.name(), expires));
+                    toRemove.add(key);
                 }
             });
+            // remove all old keys
+            toRemove.forEach(cooldowns::remove);
             newCooldowns.forEach(cooldown -> {
                 CooldownKey key = new CooldownKey(cooldown.player(), cooldown.kit());
-                cooldowns.remove(key);
                 cooldowns.put(key, cooldown.expires());
             });
         }
