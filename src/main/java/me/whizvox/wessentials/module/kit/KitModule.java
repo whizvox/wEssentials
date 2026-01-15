@@ -148,7 +148,7 @@ public class KitModule extends SerializableModule {
             kitNamesCache.remove(oldKit.name());
         }
         kits.put(newKit.name(), newKit);
-        if (displayNameUpdated) {
+        if (nameUpdated || displayNameUpdated) {
             kitNamesCache.put(newKit.name(), MiniMessage.miniMessage().deserialize(newKit.displayName()));
         }
         if (nameUpdated) {
