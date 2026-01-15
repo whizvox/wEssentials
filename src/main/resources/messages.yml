@@ -57,6 +57,12 @@ message:
         toReceiver: <aqua><player> is requesting to teleport to you. <remaining></aqua>
         remaining: Type <bold><green>/tpaccept</green></bold> to accept, or <bold><red>/tpdeny</red></bold> to deny. You have <gold>60 seconds</gold> to respond.
       sender: <green>Successfully sent a teleport request to <player>.</green>
+  through:
+    success: <light_purple>Vwoop!</light_purple>
+    fail: <gold>Found nowhere to go.</gold>
+  top:
+    success: <green>Woosh!</green>
+    fail: <gold>Could not find any solid blocks to teleport to.</gold>
   warp:
     nameConflict: <red>There already exists a warp named <yellow><warp></yellow>.</red>
     set: <green>Warp <yellow><warp></yellow> successfully created.</green>
@@ -72,4 +78,5 @@ exception:
   warp:
     notFound: 'Warp not found: %s'
     invalidName: 'Invalid warp name: %s'
+  invalidFace: 'Invalid face: %s. Must be one of [north, south, east, west, up, down].'
   unknownWorld: 'Unknown world: %s'

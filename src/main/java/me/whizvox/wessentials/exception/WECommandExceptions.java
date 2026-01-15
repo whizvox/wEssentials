@@ -7,6 +7,7 @@ public class WECommandExceptions {
             UNKNOWN_KIT = new TranslatableCommandException("exception.kit.unknown"),
             WARP_NOT_FOUND = new TranslatableCommandException("exception.warp.notFound"),
             INVALID_WARP_NAME = new TranslatableCommandException("exception.warp.invalidName"),
+            INVALID_FACE = new TranslatableCommandException("exception.invalidFace"),
             UNKNOWN_WORLD = new TranslatableCommandException("exception.unknownWorld");
 
 }

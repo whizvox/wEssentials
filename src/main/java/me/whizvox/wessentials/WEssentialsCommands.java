@@ -2,6 +2,8 @@ package me.whizvox.wessentials;
 
 import io.papermc.paper.command.brigadier.Commands;
 import me.whizvox.wessentials.command.WEssentialsCommand;
+import me.whizvox.wessentials.command.extra.CenterCommand;
+import me.whizvox.wessentials.command.extra.TopCommand;
 import me.whizvox.wessentials.command.home.ClearHomeCommand;
 import me.whizvox.wessentials.command.home.SetHomeCommand;
 import me.whizvox.wessentials.command.home.TeleportHomeCommand;
@@ -26,6 +28,9 @@ public class WEssentialsCommands {
         new TeleportHomeCommand(),
         new SetHomeCommand(),
         new ClearHomeCommand(),
+        // extra commands
+        new CenterCommand(),
+        new TopCommand(),
         // kit commands
         new GiveKitCommand(),
         new CreateKitCommand(),
