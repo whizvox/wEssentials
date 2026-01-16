@@ -25,7 +25,7 @@ public class SetWarpCommand extends ModuleCommand {
     private static final Pattern NAME_PATTERN = Pattern.compile("\\w{1,32}");
 
     public SetWarpCommand() {
-        super("warp", "setwarp");
+        super("warp", "setwarp", "warp.set");
     }
 
     private int setWarp(CommandSender sender, String name, Location location) throws CommandSyntaxException {

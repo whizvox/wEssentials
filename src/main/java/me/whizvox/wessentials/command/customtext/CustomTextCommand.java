@@ -24,10 +24,10 @@ public class CustomTextCommand extends ModuleCommand {
     private final Permission editPermission;
 
     public CustomTextCommand() {
-        super("customtext", "customtext", (Permission) null);
-        examplePermission = new Permission("wessentials.customtext.command.manage.example");
-        listPermission = new Permission("wessentials.customtext.command.manage.list");
-        editPermission = new Permission("wessentials.customtext.command.manage.edit");
+        super("customtext", "customtext", "customtext");
+        examplePermission = new Permission("wessentials.customtext.example");
+        listPermission = new Permission("wessentials.customtext.list");
+        editPermission = new Permission("wessentials.customtext.edit");
     }
 
     @Override

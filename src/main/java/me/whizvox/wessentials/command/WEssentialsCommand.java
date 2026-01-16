@@ -17,7 +17,7 @@ public class WEssentialsCommand extends ModuleCommand {
             versionPermission;
 
     public WEssentialsCommand() {
-        super(null, "wessentials", (Permission) null);
+        super(null, "wessentials", "command");
         reloadPermission = new Permission("wessentials.command.reload");
         versionPermission = new Permission("wessentials.command.version");
     }

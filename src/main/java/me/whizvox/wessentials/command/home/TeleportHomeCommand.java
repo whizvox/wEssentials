@@ -22,7 +22,7 @@ public class TeleportHomeCommand extends ModuleCommand {
 
     public TeleportHomeCommand() {
         super("home", "home", "home.teleport");
-        otherPermission = new Permission("wessentials.command.home.teleport.other");
+        otherPermission = new Permission("wessentials.home.teleport.other");
     }
 
     private int teleportToHome(Player sender, @Nullable Player receiver) {

@@ -21,7 +21,7 @@ public class ClearHomeCommand extends ModuleCommand {
 
     public ClearHomeCommand() {
         super("home", "clearhome", "home.clear");
-        otherPermission = new Permission("wessentials.command.home.clear.other");
+        otherPermission = new Permission("wessentials.home.clear.other");
     }
 
     private int clearHome(CommandSender sender, @Nullable Player receiver) {

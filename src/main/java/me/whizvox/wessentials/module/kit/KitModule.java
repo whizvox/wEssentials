@@ -8,7 +8,6 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
@@ -202,14 +201,6 @@ public class KitModule extends SerializableModule {
     }
 
     private record CooldownKey(UUID player, String kit) {
-    }
-
-    public static Permission getKitPermission(String kitName) {
-        return new Permission("wessentials.kit." + kitName);
-    }
-
-    public static Permission getKitPermission(Kit kit) {
-        return getKitPermission(kit.name());
     }
 
 }

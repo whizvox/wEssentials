@@ -7,6 +7,7 @@ import me.whizvox.wessentials.WEssentials;
 import me.whizvox.wessentials.core.ModuleCommand;
 import me.whizvox.wessentials.module.customtext.CustomTextModule;
 import net.kyori.adventure.text.Component;
+import org.bukkit.permissions.Permission;
 
 public class ShowCustomTextCommand extends ModuleCommand {
 
@@ -14,7 +15,7 @@ public class ShowCustomTextCommand extends ModuleCommand {
     private final String key;
 
     public ShowCustomTextCommand(String key, CustomTextModule customText) {
-        super("customtext", key, customText.getPermission(key));
+        super("customtext", key, new Permission(CustomTextModule.getPermission(key)));
         this.key = key;
         this.customText = customText;
     }

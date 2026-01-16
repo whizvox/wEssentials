@@ -27,7 +27,9 @@ public class WarpArgumentType implements CustomArgumentType.Converted<WarpLocati
         WEssentials.inst().getWarps().getWarpNames().stream()
             .sorted()
             .forEach(name -> {
-                if (name.toLowerCase().startsWith(builder.getRemainingLowerCase()) && context.getSource() instanceof CommandSourceStack source && source.getSender().hasPermission("wessentials.warp." + name)) {
+                if (name.toLowerCase().startsWith(builder.getRemainingLowerCase()) &&
+                        (!(context.getSource() instanceof CommandSourceStack source) ||
+                        source.getSender().hasPermission(WarpLocation.getPermission(name)))) {
                     builder.suggest(name);
                 }
             });

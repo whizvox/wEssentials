@@ -38,6 +38,14 @@ public record Kit(String name,
         return new Kit(name, items, displayName, newCooldown);
     }
 
+    public String getPermission() {
+        return getPermission(name);
+    }
+
+    public static String getPermission(String kitName) {
+        return "wessentials.kit.access." + kitName;
+    }
+
     @Override
     public Map<String, Object> serialize() {
         return Map.of(

@@ -31,15 +31,15 @@ public class GiveKitCommand extends ModuleCommand {
 
     public GiveKitCommand() {
         super("kit", "kit", "kit.give");
-        otherPermission = new Permission("wessentials.command.kit.give.other");
-        bypassCooldownPermission = new Permission("wessentials.command.kit.give.bypassCooldown");
+        otherPermission = new Permission("wessentials.kit.give.other");
+        bypassCooldownPermission = new Permission("wessentials.kit.give.bypassCooldown");
     }
 
     private int giveKit(CommandSender sender, @Nullable Player receiver, Kit kit) throws CommandSyntaxException {
         if (receiver == null) {
             receiver = (Player) sender;
         }
-        if (!sender.hasPermission(KitModule.getKitPermission(kit))) {
+        if (!sender.hasPermission(kit.getPermission())) {
             throw WECommandExceptions.UNKNOWN_KIT.create(kit.name());
         }
         LocalDateTime cooldownExpiration = WEssentials.inst().getKits().getCooldownExpiration(receiver, kit.name());

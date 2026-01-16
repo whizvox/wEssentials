@@ -20,7 +20,7 @@ public class ClearNicknameCommand extends ModuleCommand {
 
     public ClearNicknameCommand() {
         super("nickname", "clearnick", "nick");
-        otherPermission = new Permission("wessentials.command.nick.other");
+        otherPermission = new Permission("wessentials.nick.other");
     }
 
     private int clearNickname(CommandSender sender, Player receiver) {

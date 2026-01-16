@@ -19,7 +19,7 @@ public abstract class ModuleCommand {
     }
 
     public ModuleCommand(String module, String command, @Nullable String permissionBase) {
-        this(module, command, permissionBase == null ? null : new Permission("wessentials.command." + permissionBase));
+        this(module, command, permissionBase == null ? null : new Permission("wessentials." + permissionBase));
     }
 
     public ModuleCommand(String module, String command) {

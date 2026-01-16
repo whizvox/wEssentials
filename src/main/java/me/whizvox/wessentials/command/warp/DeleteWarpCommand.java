@@ -14,7 +14,7 @@ import java.util.Map;
 public class DeleteWarpCommand extends ModuleCommand {
 
     public DeleteWarpCommand() {
-        super("warp", "delwarp");
+        super("warp", "delwarp", "warp.delete");
     }
 
     @Override

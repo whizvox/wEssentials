@@ -17,7 +17,7 @@ import java.util.Map;
 public class WarpCommand extends ModuleCommand {
 
     public WarpCommand() {
-        super("warp", "warp");
+        super("warp", "warp", "warp.teleport");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class WarpCommand extends ModuleCommand {
             .executes(context -> {
                 Player player = (Player) context.getSource().getSender();
                 WarpLocation warp = WarpArgumentType.getWarp(context, "warp");
-                if (player.hasPermission("wessentials.warp." + warp.name())) {
+                if (player.hasPermission("wessentials.warp.access." + warp.name())) {
                     player.teleport(warp.location(), PlayerTeleportEvent.TeleportCause.COMMAND);
                     player.sendMessage(WEssentials.translate("message.warp.teleport", Map.of("warp", warp.name())));
                 } else {

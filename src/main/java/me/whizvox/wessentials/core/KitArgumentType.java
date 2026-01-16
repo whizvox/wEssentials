@@ -26,7 +26,8 @@ public class KitArgumentType implements CustomArgumentType.Converted<Kit, String
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         WEssentials.inst().getKits().getAll().stream()
             .filter(kit -> kit.name().toLowerCase().startsWith(builder.getRemainingLowerCase()) &&
-                (!(context.getSource() instanceof CommandSourceStack source) || source.getSender().hasPermission("wessentials.kit." + kit.name())))
+                (!(context.getSource() instanceof CommandSourceStack source) ||
+                    source.getSender().hasPermission(kit.getPermission())))
             .sorted(Comparator.comparing(Kit::name))
             .forEach(kit -> builder.suggest(kit.name()));
         return builder.buildFuture();
