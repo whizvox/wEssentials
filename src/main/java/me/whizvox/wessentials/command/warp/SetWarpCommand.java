@@ -35,7 +35,7 @@ public class SetWarpCommand extends ModuleCommand {
         //Location other = WEssentials.inst().getWarps().getWarp(name);
         //if (other == null) {
             WEssentials.inst().getWarps().set(name, location);
-            WEssentials.inst().saveWarps();
+            WEssentials.inst().getWarps().save();
             sender.sendMessage(WEssentials.translate("message.warp.set", Map.of("warp", name)));
         //} else {
         //    sender.sendMessage(WEssentials.translate("message.warp.nameConflict", Map.of("warp", name)));

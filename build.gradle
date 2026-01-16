@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.whizvox.wessentials'
-version = '1.0.0-dev'
+version = '1.0.0'
 
 repositories {
     mavenCentral()

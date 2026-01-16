@@ -23,7 +23,7 @@ public class DeleteWarpCommand extends ModuleCommand {
             .executes(context -> {
                 WarpLocation warp = WarpArgumentType.getWarp(context, "warp");
                 WEssentials.inst().getWarps().delete(warp.name());
-                WEssentials.inst().saveWarps();
+                WEssentials.inst().getWarps().save();
                 context.getSource().getSender().sendMessage(WEssentials.translate("message.warp.delete", Map.of("warp", warp.name())));
                 return Command.SINGLE_SUCCESS;
             })

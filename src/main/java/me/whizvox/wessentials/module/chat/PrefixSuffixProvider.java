@@ -8,4 +8,6 @@ public interface PrefixSuffixProvider {
 
     String getSuffix(Player player);
 
+    PrefixSuffixProvider EMPTY = new EmptyPrefixSuffixProvider();
+
 }

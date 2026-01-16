@@ -2,6 +2,7 @@ package me.whizvox.wessentials.module.chat;
 
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import me.whizvox.wessentials.module.SerializableModule;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
@@ -14,34 +15,49 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
 @NotNullByDefault
-public class ChatModule implements Listener, ChatRenderer {
+public class ChatModule extends SerializableModule implements Listener, ChatRenderer {
 
     private @Nullable String playerFormat;
     private @Nullable String chatFormat;
     private @Nullable String joinFormat;
     private @Nullable String leaveFormat;
 
-    private final PrefixSuffixProvider prefixSuffixProvider;
+    private PrefixSuffixProvider prefixSuffixProvider;
 
-    public ChatModule(PrefixSuffixProvider prefixSuffixProvider) {
+    public ChatModule(Plugin plugin) {
+        super(plugin, "chat.yml", true);
         playerFormat = null;
         chatFormat = null;
         joinFormat = null;
         leaveFormat = null;
-        this.prefixSuffixProvider = prefixSuffixProvider;
+        prefixSuffixProvider = PrefixSuffixProvider.EMPTY;
     }
 
-    public void load(Configuration config) {
+    @Override
+    protected void loadFrom(Configuration config) {
         playerFormat = config.getString("format.player");
         chatFormat = config.getString("format.chat");
         joinFormat = config.getString("format.join");
         leaveFormat = config.getString("format.leave");
+    }
+
+    @Override
+    protected void saveTo(Configuration config) {
+        config.set("format.player", playerFormat);
+        config.set("format.chat", chatFormat);
+        config.set("format.join", joinFormat);
+        config.set("format.leave", leaveFormat);
+    }
+
+    public void setPrefixSuffixProvider(PrefixSuffixProvider prefixSuffixProvider) {
+        this.prefixSuffixProvider = prefixSuffixProvider;
     }
 
     @SuppressWarnings("PatternValidation")

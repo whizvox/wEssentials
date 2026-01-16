@@ -33,7 +33,7 @@ public class SetOtherNicknameCommand extends ModuleCommand {
                             .getFirst();
                         String nickname = StringArgumentType.getString(context, "nickname");
                         Component nickComp = WEssentials.inst().getNicknames().setNickname(sender, receiver, nickname);
-                        WEssentials.inst().saveNicknames();
+                        WEssentials.inst().getNicknames().save();
                         if (sender != receiver) {
                             sender.sendMessage(WEssentials.translate("message.nick.setOther", Map.of("player", receiver.getName(), "nick", nickComp)));
                         }

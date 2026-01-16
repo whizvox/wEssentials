@@ -3,6 +3,9 @@ package me.whizvox.wessentials.module.teleport;
 import me.whizvox.wessentials.WEssentials;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,12 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TeleportRequestModule {
+public class TeleportRequestModule implements Listener {
 
     private final List<TeleportRequest> requests;
 
     public TeleportRequestModule() {
         requests = new ArrayList<>();
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        cancelAll(event.getPlayer());
     }
 
     public void clear() {

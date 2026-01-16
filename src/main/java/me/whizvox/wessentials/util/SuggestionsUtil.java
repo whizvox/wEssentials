@@ -6,8 +6,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import me.whizvox.wessentials.WEssentials;
 import me.whizvox.wessentials.module.kit.Kit;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 

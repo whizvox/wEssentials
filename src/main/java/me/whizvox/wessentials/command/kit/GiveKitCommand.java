@@ -12,7 +12,6 @@ import me.whizvox.wessentials.core.KitArgumentType;
 import me.whizvox.wessentials.core.ModuleCommand;
 import me.whizvox.wessentials.exception.WECommandExceptions;
 import me.whizvox.wessentials.module.kit.Kit;
-import me.whizvox.wessentials.module.kit.KitModule;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

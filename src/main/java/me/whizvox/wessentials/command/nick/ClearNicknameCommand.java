@@ -25,7 +25,7 @@ public class ClearNicknameCommand extends ModuleCommand {
 
     private int clearNickname(CommandSender sender, Player receiver) {
         if (WEssentials.inst().getNicknames().clearNickname(receiver)) {
-            WEssentials.inst().saveNicknames();
+            WEssentials.inst().getNicknames().save();
             if (sender != receiver) {
                 sender.sendMessage(WEssentials.translate("message.nick.clearOther", Map.of("player", receiver.getName())));
             }
@@ -41,6 +41,11 @@ public class ClearNicknameCommand extends ModuleCommand {
     }
 
     @Override
+    public boolean hasPermission(CommandSourceStack source) {
+        return super.hasPermission(source) && source.getSender() instanceof Player;
+    }
+
+    @Override
     protected void register(LiteralArgumentBuilder<CommandSourceStack> builder) {
         builder
             .then(Commands.argument("player", ArgumentTypes.player())
@@ -52,7 +57,6 @@ public class ClearNicknameCommand extends ModuleCommand {
                         .getFirst()
                 ))
             )
-            .requires(source -> source.getSender() instanceof Player)
             .executes(context -> clearNickname(
                 context.getSource().getSender(),
                 (Player) context.getSource().getSender()

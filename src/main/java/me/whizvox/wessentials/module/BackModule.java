@@ -25,6 +25,7 @@ public class BackModule extends SerializableModule implements Listener {
 
     public final Permission
         deathPermission,
+        homePermission,
         tpaPermission;
     public final Map<PlayerTeleportEvent.TeleportCause, Permission> causePermissions;
 
@@ -32,12 +33,13 @@ public class BackModule extends SerializableModule implements Listener {
         super(plugin, "back.yml", false);
         locations = new Object2ObjectOpenHashMap<>();
         backtracking = new ArrayList<>();
-        deathPermission = new Permission("wessentials.back.cause.death");
-        tpaPermission = new Permission("wessentials.back.cause.tpa");
+        deathPermission = new Permission("wessentials.back.update.death");
+        homePermission = new Permission("wessentials.back.update.home");
+        tpaPermission = new Permission("wessentials.back.update.tpa");
         Map<PlayerTeleportEvent.TeleportCause, Permission> causePermissionsTemp = new Object2ObjectOpenHashMap<>();
         for (PlayerTeleportEvent.TeleportCause cause : PlayerTeleportEvent.TeleportCause.values()) {
             String camelCaseName = StringUtil.snakeToCamelCase(cause.toString());
-            Permission permission = new Permission("wessentials.back.cause." + camelCaseName);
+            Permission permission = new Permission("wessentials.back.update." + camelCaseName);
             causePermissionsTemp.put(cause, permission);
         }
         causePermissions = Collections.unmodifiableMap(causePermissionsTemp);

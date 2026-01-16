@@ -31,7 +31,7 @@ public class SetOwnNicknameCommand extends ModuleCommand {
                     Player sender = (Player) context.getSource().getSender();
                     String nickname = StringArgumentType.getString(context, "nickname");
                     Component nickComp = WEssentials.inst().getNicknames().setNickname(sender, sender, nickname);
-                    WEssentials.inst().saveNicknames();
+                    WEssentials.inst().getNicknames().save();
                     sender.sendMessage(WEssentials.translate("message.nick.set", Map.of("nick", nickComp)));
                     return Command.SINGLE_SUCCESS;
                 })

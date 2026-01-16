@@ -1,27 +1,34 @@
 package me.whizvox.wessentials.module.warp;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import me.whizvox.wessentials.module.SerializableModule;
 import org.bukkit.Location;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Map;
 
-public class WarpModule {
+@NotNullByDefault
+public class WarpModule extends SerializableModule {
 
     private final Map<String, Location> warps;
 
-    public WarpModule() {
+    public WarpModule(Plugin plugin) {
+        super(plugin, "warps.yml", false);
         warps = new Object2ObjectOpenHashMap<>();
     }
 
-    public void load(Configuration config) {
+    @Override
+    protected void loadFrom(Configuration config) {
         warps.clear();
         config.getKeys(false).forEach(key -> warps.put(key, config.getLocation(key)));
     }
 
-    public void save(Configuration config) {
+    @Override
+    protected void saveTo(Configuration config) {
         warps.keySet().stream()
             .sorted()
             .forEach(key -> config.set(key, warps.get(key)));

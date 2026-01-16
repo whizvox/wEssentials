@@ -1,6 +1,7 @@
 package me.whizvox.wessentials.module.nick;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import me.whizvox.wessentials.module.SerializableModule;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -8,7 +9,11 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -16,13 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class NicknameModule {
+public class NicknameModule extends SerializableModule implements Listener {
 
     private final MiniMessage miniMessage;
     private final Permission colorPermission;
     private final Map<UUID, Nickname> nicknames;
 
-    public NicknameModule() {
+    public NicknameModule(Plugin plugin) {
+        super(plugin, "nicknames.yml", false);
         miniMessage = MiniMessage.builder()
             .tags(TagResolver.builder()
                 .resolvers(StandardTags.color(), StandardTags.decorations(), StandardTags.gradient(),
@@ -33,7 +39,8 @@ public class NicknameModule {
         nicknames = new Object2ObjectOpenHashMap<>();
     }
 
-    public void load(Configuration config) {
+    @Override
+    protected void loadFrom(Configuration config) {
         nicknames.clear();
         //noinspection unchecked
         List<Nickname> nicknamesList = (List<Nickname>) config.getList("nicknames");
@@ -42,9 +49,18 @@ public class NicknameModule {
         }
     }
 
-    public void save(Configuration config) {
+    @Override
+    protected void saveTo(Configuration config) {
         List<Nickname> nicknamesList = new ArrayList<>(nicknames.values());
         config.set("nicknames", nicknamesList);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Component nick = getNickname(event.getPlayer());
+        if (nick != null) {
+            event.getPlayer().displayName(nick);
+        }
     }
 
     @Nullable

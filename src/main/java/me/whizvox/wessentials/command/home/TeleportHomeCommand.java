@@ -31,6 +31,10 @@ public class TeleportHomeCommand extends ModuleCommand {
         }
         Location location = WEssentials.inst().getHomes().getHome(receiver);
         if (location != null) {
+            if (sender.hasPermission(WEssentials.inst().getBack().homePermission)) {
+                WEssentials.inst().getBack().setLocation(sender, sender.getLocation());
+                WEssentials.inst().getBack().save();
+            }
             sender.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
             if (sender == receiver) {
                 sender.sendMessage(WEssentials.translate("message.home.teleport"));

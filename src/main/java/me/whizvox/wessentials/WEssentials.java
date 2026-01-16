@@ -4,7 +4,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.whizvox.wessentials.module.BackModule;
 import me.whizvox.wessentials.module.chat.ChatModule;
-import me.whizvox.wessentials.module.chat.EmptyPrefixSuffixProvider;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
 import me.whizvox.wessentials.module.customtext.CustomTextModule;
 import me.whizvox.wessentials.module.home.Home;
@@ -20,13 +19,12 @@ import me.whizvox.wessentials.module.warp.WarpModule;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -37,7 +35,7 @@ public final class WEssentials extends JavaPlugin {
     private final TeleportRequestModule teleports;
     private final WarpModule warps;
     private final NicknameModule nicknames;
-    private ChatModule chat;
+    private final ChatModule chat;
     private final HomeModule homes;
     private final KitModule kits;
     private final BackModule back;
@@ -47,9 +45,9 @@ public final class WEssentials extends JavaPlugin {
         instance = this;
         messages = new Messages();
         teleports = new TeleportRequestModule();
-        warps = new WarpModule();
-        nicknames = new NicknameModule();
-        chat = null;
+        warps = new WarpModule(this);
+        nicknames = new NicknameModule(this);
+        chat = new ChatModule(this);
         homes = new HomeModule(this);
         kits = new KitModule(this);
         back = new BackModule(this);
@@ -63,6 +61,7 @@ public final class WEssentials extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
         // Messages
         File messagesFile = new File(getDataFolder(), "messages.yml");
         if (!messagesFile.exists()) {
@@ -70,61 +69,54 @@ public final class WEssentials extends JavaPlugin {
         }
         Configuration messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
         messages.load(messagesConfig);
-        // Chat
-        File chatFile = new File(getDataFolder(), "chat.yml");
-        if (!chatFile.exists()) {
-            saveResource("chat.yml", false);
-        }
-        Configuration chatConfig = YamlConfiguration.loadConfiguration(chatFile);
-        chat.load(chatConfig);
-        // Warps
-        File warpsFile = new File(getDataFolder(), "warps.yml");
-        if (warpsFile.exists()) {
-            Configuration warpsConfig = YamlConfiguration.loadConfiguration(warpsFile);
-            warps.load(warpsConfig);
-        }
-        // Nicknames
-        File nicknamesFile = new File(getDataFolder(), "nicknames.yml");
-        if (nicknamesFile.exists()) {
-            Configuration nicknamesConfig = YamlConfiguration.loadConfiguration(nicknamesFile);
-            nicknames.load(nicknamesConfig);
-        }
-        // Homes
+
+        // Modules
+        chat.load();
+        warps.load();
+        nicknames.load();
         homes.load();
-        // Kits
         kits.load();
-        // Back
         back.load();
-        // Custom text
         customText.load();
     }
 
     @Override
     public void onEnable() {
+        // register custom configuration types
         ConfigurationSerialization.registerClass(Nickname.class);
         ConfigurationSerialization.registerClass(Home.class);
         ConfigurationSerialization.registerClass(SlottedItem.class);
         ConfigurationSerialization.registerClass(Kit.class);
         ConfigurationSerialization.registerClass(KitCooldown.class);
+
+        // register commands
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             Commands commands = event.registrar();
             WEssentialsCommands.registerAll(commands);
             customText.registerCommands(commands);
         });
+
+        // schedule periodic cleaning of teleport requests
         getServer().getAsyncScheduler().runAtFixedRate(this, $ -> teleports.removeInvalid(), 1000, 10, TimeUnit.SECONDS);
-        getServer().getPluginManager().registerEvents(new WEssentialsEventListener(), this);
+
+        // attempt to load LuckPerms prefix/suffix provider
         if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
             try {
-                chat = new ChatModule(new LuckPermsPrefixSuffixProvider());
+                chat.setPrefixSuffixProvider(new LuckPermsPrefixSuffixProvider());
                 getLogger().info("Loaded LuckPerms prefix/suffix provider");
             } catch (Exception e) {
-                chat = new ChatModule(new EmptyPrefixSuffixProvider());
                 getLogger().log(Level.SEVERE, "Could not load LuckPerms prefix/suffix provider", e);
             }
-        } else {
-            chat = new ChatModule(new EmptyPrefixSuffixProvider());
         }
-        getServer().getPluginManager().registerEvents(chat, this);
+
+        // register events
+        PluginManager pluginMan = getServer().getPluginManager();
+        pluginMan.registerEvents(back, this);
+        pluginMan.registerEvents(chat, this);
+        pluginMan.registerEvents(nicknames, this);
+        pluginMan.registerEvents(teleports, this);
+
+        // soft reload
         reload();
     }
 
@@ -137,16 +129,14 @@ public final class WEssentials extends JavaPlugin {
         return messages;
     }
 
-    public TeleportRequestModule getTeleports() {
-        return teleports;
+    // Modules
+
+    public BackModule getBack() {
+        return back;
     }
 
-    public WarpModule getWarps() {
-        return warps;
-    }
-
-    public NicknameModule getNicknames() {
-        return nicknames;
+    public CustomTextModule getCustomText() {
+        return customText;
     }
 
     public HomeModule getHomes() {
@@ -157,41 +147,27 @@ public final class WEssentials extends JavaPlugin {
         return kits;
     }
 
-    public BackModule getBack() {
-        return back;
+    public NicknameModule getNicknames() {
+        return nicknames;
     }
 
-    public CustomTextModule getCustomText() {
-        return customText;
+    public TeleportRequestModule getTeleports() {
+        return teleports;
     }
 
-    public void saveWarps() {
-        File warpsFile = new File(getDataFolder(), "warps.yml");
-        FileConfiguration warpsConfig = new YamlConfiguration();
-        warps.save(warpsConfig);
-        try {
-            warpsConfig.save(warpsFile);
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Could not save warps file: " + warpsFile, e);
-        }
+    public WarpModule getWarps() {
+        return warps;
     }
 
-    public void saveNicknames() {
-        File file = new File(getDataFolder(), "nicknames.yml");
-        FileConfiguration config = new YamlConfiguration();
-        nicknames.save(config);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Could not save nicknames file: " + file, e);
-        }
-    }
+    // Singleton logic
 
     private static WEssentials instance = null;
 
     public static WEssentials inst() {
         return instance;
     }
+
+    // Helper translation methods
 
     public static Component translate(String key, Map<String, Object> args) {
         return instance.messages.translate(key, args);
