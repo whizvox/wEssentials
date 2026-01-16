@@ -8,6 +8,7 @@ public class WECommandExceptions {
             WARP_NOT_FOUND = new TranslatableCommandException("exception.warp.notFound"),
             INVALID_WARP_NAME = new TranslatableCommandException("exception.warp.invalidName"),
             INVALID_FACE = new TranslatableCommandException("exception.invalidFace"),
-            UNKNOWN_WORLD = new TranslatableCommandException("exception.unknownWorld");
+            UNKNOWN_WORLD = new TranslatableCommandException("exception.unknownWorld"),
+            UNKNOWN_CUSTOM_TEXT_KEY = new TranslatableCommandException("exception.unknownCustomTextKey");
 
 }

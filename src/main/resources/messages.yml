@@ -3,6 +3,13 @@ message:
   back:
     noLocation: <gold>There is nowhere to teleport back to.</gold>
     fail: <gold>Could not teleport to previous location. Do you have any passengers?</gold>
+  customtext:
+    none: <red>No custom text found for <key>.</red>
+    exampleExists: <gold>Custom text file already exists.</gold>
+    example: <green>Custom text file generated at <yellow><file></yellow>.</green><newline><gold>Note that any new commands will not be registered until the server restarts.</gold>
+    list: '<aqua>Custom text commands: </aqua><commands>'
+    listNone: <gold>No custom text messages found.</gold>
+    updated: <green>Custom text successfully updated.</green>
   home:
     notSet: <red>Home is not set.</red>
     set: <green>Home location has been set.</green>
@@ -83,3 +90,4 @@ exception:
     invalidName: 'Invalid warp name: %s'
   invalidFace: 'Invalid face: %s. Must be one of [north, south, east, west, up, down].'
   unknownWorld: 'Unknown world: %s'
+  unknownCustomTextKey: 'Unknown custom text key: %s'

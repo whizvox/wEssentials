@@ -43,4 +43,11 @@ public class SuggestionsUtil {
             .forEach(kit -> builder.suggest(kit.name()));
     };
 
+    public static void customTextKeys(SuggestionsBuilder builder) {
+        WEssentials.inst().getCustomText().getKeys().stream()
+            .filter(key -> key.toLowerCase().startsWith(builder.getRemainingLowerCase()))
+            .sorted(String::compareTo)
+            .forEach(builder::suggest);
+    }
+
 }

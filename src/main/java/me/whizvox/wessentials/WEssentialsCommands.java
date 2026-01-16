@@ -3,6 +3,7 @@ package me.whizvox.wessentials;
 import io.papermc.paper.command.brigadier.Commands;
 import me.whizvox.wessentials.command.BackCommand;
 import me.whizvox.wessentials.command.WEssentialsCommand;
+import me.whizvox.wessentials.command.customtext.CustomTextCommand;
 import me.whizvox.wessentials.command.extra.CenterCommand;
 import me.whizvox.wessentials.command.extra.TopCommand;
 import me.whizvox.wessentials.command.home.ClearHomeCommand;
@@ -27,6 +28,8 @@ public class WEssentialsCommands {
         new WEssentialsCommand(),
         // back command
         new BackCommand(),
+        // custom text command
+        new CustomTextCommand(),
         // home commands
         new TeleportHomeCommand(),
         new SetHomeCommand(),

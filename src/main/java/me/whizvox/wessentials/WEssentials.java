@@ -1,10 +1,12 @@
 package me.whizvox.wessentials;
 
+import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.whizvox.wessentials.module.BackModule;
 import me.whizvox.wessentials.module.chat.ChatModule;
 import me.whizvox.wessentials.module.chat.EmptyPrefixSuffixProvider;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
+import me.whizvox.wessentials.module.customtext.CustomTextModule;
 import me.whizvox.wessentials.module.home.Home;
 import me.whizvox.wessentials.module.home.HomeModule;
 import me.whizvox.wessentials.module.kit.Kit;
@@ -39,6 +41,7 @@ public final class WEssentials extends JavaPlugin {
     private final HomeModule homes;
     private final KitModule kits;
     private final BackModule back;
+    private final CustomTextModule customText;
 
     public WEssentials() {
         instance = this;
@@ -50,6 +53,7 @@ public final class WEssentials extends JavaPlugin {
         homes = new HomeModule(this);
         kits = new KitModule(this);
         back = new BackModule(this);
+        customText = new CustomTextModule(this);
     }
 
     public void reload() {
@@ -91,6 +95,8 @@ public final class WEssentials extends JavaPlugin {
         kits.load();
         // Back
         back.load();
+        // Custom text
+        customText.load();
     }
 
     @Override
@@ -100,8 +106,11 @@ public final class WEssentials extends JavaPlugin {
         ConfigurationSerialization.registerClass(SlottedItem.class);
         ConfigurationSerialization.registerClass(Kit.class);
         ConfigurationSerialization.registerClass(KitCooldown.class);
-        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-            commands -> WEssentialsCommands.registerAll(commands.registrar()));
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            Commands commands = event.registrar();
+            WEssentialsCommands.registerAll(commands);
+            customText.registerCommands(commands);
+        });
         getServer().getAsyncScheduler().runAtFixedRate(this, $ -> teleports.removeInvalid(), 1000, 10, TimeUnit.SECONDS);
         getServer().getPluginManager().registerEvents(new WEssentialsEventListener(), this);
         if (getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
@@ -150,6 +159,10 @@ public final class WEssentials extends JavaPlugin {
 
     public BackModule getBack() {
         return back;
+    }
+
+    public CustomTextModule getCustomText() {
+        return customText;
     }
 
     public void saveWarps() {
