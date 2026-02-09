@@ -2,6 +2,8 @@ package me.whizvox.wessentials.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.regex.Pattern;
 
 public class StringUtil {
@@ -38,6 +40,20 @@ public class StringUtil {
             }
         }
         return sb.toString();
+    }
+
+    public static LogRecord logParamsException(Level level, Throwable t, String format, Object arg1, Object... otherArgs) {
+        LogRecord lr = new LogRecord(level, format);
+        lr.setThrown(t);
+        if (otherArgs.length == 0) {
+            lr.setParameters(new Object[] {arg1});
+        } else {
+            Object[] args = new Object[otherArgs.length + 1];
+            args[0] = arg1;
+            System.arraycopy(otherArgs, 0, args, 1, otherArgs.length);
+            lr.setParameters(args);
+        }
+        return lr;
     }
 
 }

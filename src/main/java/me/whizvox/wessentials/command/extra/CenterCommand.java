@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public class CenterCommand extends ModuleCommand {
 
     public CenterCommand() {
-        super("extra", "center");
+        super(null, "center");
     }
 
     @Override

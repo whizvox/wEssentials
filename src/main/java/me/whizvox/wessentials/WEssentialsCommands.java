@@ -20,6 +20,7 @@ import me.whizvox.wessentials.command.warp.WarpCommand;
 import me.whizvox.wessentials.core.ModuleCommand;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class WEssentialsCommands {
 
@@ -60,7 +61,25 @@ public class WEssentialsCommands {
     );
 
     public static void registerAll(Commands registrar) {
-        commands.forEach(cmd -> cmd.register(registrar));
+        commands.forEach(cmd -> {
+            String moduleName = cmd.getModule();
+            if (moduleName != null) {
+                WEssentials.inst().getModules().getModule(moduleName).ifPresentOrElse(
+                    module -> {
+                        if (module.isEnabled()) {
+                            cmd.register(registrar);
+                        }
+                    },
+                    () -> WEssentials.inst().getLogger().log(
+                        Level.SEVERE,
+                        "Error trying to register command ''/{0}'', could not find associated module ''{1}''",
+                        new Object[] {cmd.getCommand(), moduleName}
+                    )
+                );
+            } else {
+                cmd.register(registrar);
+            }
+        });
     }
 
 }

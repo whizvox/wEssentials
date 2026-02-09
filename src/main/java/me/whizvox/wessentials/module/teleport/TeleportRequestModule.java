@@ -1,6 +1,7 @@
 package me.whizvox.wessentials.module.teleport;
 
 import me.whizvox.wessentials.WEssentials;
+import me.whizvox.wessentials.module.SimpleModule;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,11 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TeleportRequestModule implements Listener {
+public class TeleportRequestModule extends SimpleModule implements Listener {
 
     private final List<TeleportRequest> requests;
 
     public TeleportRequestModule() {
+        super("teleportrequest");
         requests = new ArrayList<>();
     }
 

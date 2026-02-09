@@ -28,7 +28,7 @@ public class NicknameModule extends SerializableModule implements Listener {
     private final Map<UUID, Nickname> nicknames;
 
     public NicknameModule(Plugin plugin) {
-        super(plugin, "nicknames.yml", false);
+        super("nickname", plugin, "nicknames.yml", false);
         miniMessage = MiniMessage.builder()
             .tags(TagResolver.builder()
                 .resolvers(StandardTags.color(), StandardTags.decorations(), StandardTags.gradient(),

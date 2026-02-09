@@ -11,7 +11,7 @@ import org.bukkit.permissions.Permission;
 public class TeleportCancelCommand extends ModuleCommand {
 
     public TeleportCancelCommand() {
-        super("teleport", "tpcancel", (Permission) null);
+        super("teleportrequest", "tpcancel", (Permission) null);
     }
 
     @Override

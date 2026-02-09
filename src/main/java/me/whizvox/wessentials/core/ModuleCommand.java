@@ -30,6 +30,10 @@ public abstract class ModuleCommand {
         return module;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
     public boolean hasPermission(CommandSourceStack source) {
         if (permission == null) {
             return true;

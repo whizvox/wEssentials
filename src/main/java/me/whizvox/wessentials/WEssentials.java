@@ -3,6 +3,7 @@ package me.whizvox.wessentials;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import me.whizvox.wessentials.module.BackModule;
+import me.whizvox.wessentials.module.ModuleManager;
 import me.whizvox.wessentials.module.chat.ChatModule;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
 import me.whizvox.wessentials.module.customtext.CustomTextModule;
@@ -19,12 +20,14 @@ import me.whizvox.wessentials.module.warp.WarpModule;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -40,6 +43,7 @@ public final class WEssentials extends JavaPlugin {
     private final KitModule kits;
     private final BackModule back;
     private final CustomTextModule customText;
+    private final ModuleManager modules;
 
     public WEssentials() {
         instance = this;
@@ -52,6 +56,8 @@ public final class WEssentials extends JavaPlugin {
         kits = new KitModule(this);
         back = new BackModule(this);
         customText = new CustomTextModule(this);
+        modules = new ModuleManager(this);
+        modules.registerAll(teleports, warps, nicknames, chat, homes, kits, back, customText);
     }
 
     public void reload() {
@@ -68,16 +74,18 @@ public final class WEssentials extends JavaPlugin {
             saveResource("messages.yml", false);
         }
         Configuration messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
-        messages.load(messagesConfig);
+        DefaultMessages defaultMessages = new DefaultMessages(messagesConfig);
+        defaultMessages.generateDefaults();
+        FileConfiguration newMessagesConfig = defaultMessages.getNewConfiguration();
+        messages.load(newMessagesConfig);
+        try {
+            newMessagesConfig.save(messagesFile);
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not save messages at " + messagesFile, e);
+        }
 
         // Modules
-        chat.load();
-        warps.load();
-        nicknames.load();
-        homes.load();
-        kits.load();
-        back.load();
-        customText.load();
+        modules.loadModules();
     }
 
     @Override
@@ -109,12 +117,31 @@ public final class WEssentials extends JavaPlugin {
             }
         }
 
+        getLogger().info("Loading main configuration");
+        PluginConfigurationGenerator pluginConfigGen = new PluginConfigurationGenerator(getConfig());
+        pluginConfigGen.generateDefaults();
+        FileConfiguration newPluginConfig = pluginConfigGen.getNewConfiguration();
+        modules.load(newPluginConfig);
+        try {
+            newPluginConfig.save(new File(getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Could not save plugin configuration file", e);
+        }
+
         // register events
         PluginManager pluginMan = getServer().getPluginManager();
-        pluginMan.registerEvents(back, this);
-        pluginMan.registerEvents(chat, this);
-        pluginMan.registerEvents(nicknames, this);
-        pluginMan.registerEvents(teleports, this);
+        if (back.isEnabled()) {
+            pluginMan.registerEvents(back, this);
+        }
+        if (chat.isEnabled()) {
+            pluginMan.registerEvents(chat, this);
+        }
+        if (nicknames.isEnabled()) {
+            pluginMan.registerEvents(nicknames, this);
+        }
+        if (teleports.isEnabled()) {
+            pluginMan.registerEvents(teleports, this);
+        }
 
         // soft reload
         reload();
@@ -122,7 +149,7 @@ public final class WEssentials extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        modules.saveModules();
     }
 
     public Messages getMessages() {
@@ -130,6 +157,10 @@ public final class WEssentials extends JavaPlugin {
     }
 
     // Modules
+
+    public ModuleManager getModules() {
+        return modules;
+    }
 
     public BackModule getBack() {
         return back;

@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class TopCommand extends ModuleCommand {
 
     public TopCommand() {
-        super("extra", "top");
+        super(null, "top");
     }
 
     @Override

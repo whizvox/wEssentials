@@ -17,7 +17,7 @@ public class WarpModule extends SerializableModule {
     private final Map<String, Location> warps;
 
     public WarpModule(Plugin plugin) {
-        super(plugin, "warps.yml", false);
+        super("warp", plugin, "warps.yml", false);
         warps = new Object2ObjectOpenHashMap<>();
     }
 

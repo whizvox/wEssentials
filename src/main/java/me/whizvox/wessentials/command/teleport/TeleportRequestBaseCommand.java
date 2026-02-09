@@ -22,7 +22,7 @@ public class TeleportRequestBaseCommand extends ModuleCommand {
     private final Permission bypassReceivePermission;
 
     public TeleportRequestBaseCommand(String command, String permissionBase, boolean toSender) {
-        super("teleport", command, permissionBase);
+        super("teleportrequest", command, permissionBase);
         this.toSender = toSender;
         receivePermission = new Permission("wessentials.teleport.receive");
         bypassReceivePermission = new Permission("wessentials.teleport.bypassReceive");

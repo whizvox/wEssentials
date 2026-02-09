@@ -30,7 +30,7 @@ public class BackModule extends SerializableModule implements Listener {
     public final Map<PlayerTeleportEvent.TeleportCause, Permission> causePermissions;
 
     public BackModule(Plugin plugin) {
-        super(plugin, "back.yml", false);
+        super("back", plugin, "back.yml", false);
         locations = new Object2ObjectOpenHashMap<>();
         backtracking = new ArrayList<>();
         deathPermission = new Permission("wessentials.back.update.death");

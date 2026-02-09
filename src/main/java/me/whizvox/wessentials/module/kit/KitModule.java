@@ -25,7 +25,7 @@ public class KitModule extends SerializableModule {
     private boolean dropIfFull;
 
     public KitModule(Plugin plugin) {
-        super(plugin, "kits.yml", false);
+        super("kit", plugin, "kits.yml", false);
         kits = new Object2ObjectOpenHashMap<>();
         kitNamesCache = new Object2ObjectOpenHashMap<>();
         cooldowns = new Object2ObjectOpenHashMap<>();

@@ -2,6 +2,7 @@ package me.whizvox.wessentials.module.chat;
 
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import me.whizvox.wessentials.ConfigurationGenerator;
 import me.whizvox.wessentials.module.SerializableModule;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -32,12 +33,17 @@ public class ChatModule extends SerializableModule implements Listener, ChatRend
     private PrefixSuffixProvider prefixSuffixProvider;
 
     public ChatModule(Plugin plugin) {
-        super(plugin, "chat.yml", true);
+        super("chat", plugin, "chat.yml", true);
         playerFormat = null;
         chatFormat = null;
         joinFormat = null;
         leaveFormat = null;
         prefixSuffixProvider = PrefixSuffixProvider.EMPTY;
+    }
+
+    @Override
+    public ConfigurationGenerator getConfigurationGenerator(Configuration config) {
+        return new ChatConfigurationGenerator(config);
     }
 
     @Override

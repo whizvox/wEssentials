@@ -18,7 +18,7 @@ public class TeleportResponseBaseCommand extends ModuleCommand {
     private final boolean accept;
 
     public TeleportResponseBaseCommand(String command, boolean accept) {
-        super("teleport", command, (Permission) null);
+        super("teleportrequest", command, (Permission) null);
         this.accept = accept;
     }
 

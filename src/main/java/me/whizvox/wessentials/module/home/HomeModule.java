@@ -20,7 +20,7 @@ public class HomeModule extends SerializableModule {
     private final Map<UUID, Home> homes;
 
     public HomeModule(Plugin plugin) {
-        super(plugin, "homes.yml", false);
+        super("home", plugin, "homes.yml", false);
         homes = new Object2ObjectOpenHashMap<>();
     }
 

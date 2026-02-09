@@ -24,7 +24,7 @@ public class CustomTextModule extends SerializableModule {
     private final Map<String, Component> textCache;
 
     public CustomTextModule(Plugin plugin) {
-        super(plugin, "customtext.yml", false);
+        super("customtext", plugin, "customtext.yml", false);
         text = new Object2ObjectOpenHashMap<>();
         textCache = new Object2ObjectOpenHashMap<>();
     }
