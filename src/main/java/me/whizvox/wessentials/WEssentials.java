@@ -2,8 +2,9 @@ package me.whizvox.wessentials;
 
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import me.whizvox.wessentials.module.BackModule;
 import me.whizvox.wessentials.module.ModuleManager;
+import me.whizvox.wessentials.module.back.BackLocation;
+import me.whizvox.wessentials.module.back.BackModule;
 import me.whizvox.wessentials.module.chat.ChatModule;
 import me.whizvox.wessentials.module.chat.LuckPermsPrefixSuffixProvider;
 import me.whizvox.wessentials.module.customtext.CustomTextModule;
@@ -96,6 +97,7 @@ public final class WEssentials extends JavaPlugin {
         ConfigurationSerialization.registerClass(SlottedItem.class);
         ConfigurationSerialization.registerClass(Kit.class);
         ConfigurationSerialization.registerClass(KitCooldown.class);
+        ConfigurationSerialization.registerClass(BackLocation.class);
 
         // register commands
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {

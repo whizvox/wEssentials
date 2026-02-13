@@ -14,8 +14,11 @@ public class DefaultMessages extends ConfigurationGenerator {
             "Locale to use when translating.",
             "Should keep as default en-US unless you really know what you're doing.");
         // back
+        set("message.back.unsafe", "<gold>Your back location is not safe to teleport to.</gold>");
+        set("message.back.unsafePermission", "<gold>Your back location is not safe to teleport to. Type <bold><yellow>/back unsafe</yellow></bold> if you <italic>really</italic> want to teleport back there.</gold>");
         set("message.back.noLocation", "<gold>There is nowhere to teleport back to.</gold>");
         set("message.back.fail", "<gold>Could not teleport to previous location. Do you have any passengers?</gold>");
+        set("message.back.success", "<green>Teleported back to your previous location.</green>");
         // custom text
         set("message.customtext.none", "<red>No custom text found for <key>.</red>");
         set("message.customtext.exampleExists", "<gold>Custom text file already exists.</gold>");
