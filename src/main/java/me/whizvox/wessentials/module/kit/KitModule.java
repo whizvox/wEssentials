@@ -1,6 +1,7 @@
 package me.whizvox.wessentials.module.kit;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import me.whizvox.wessentials.ConfigurationGenerator;
 import me.whizvox.wessentials.module.SerializableModule;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -42,6 +43,11 @@ public class KitModule extends SerializableModule {
     }
 
     @Override
+    public @Nullable ConfigurationGenerator getConfigurationGenerator(Configuration config) {
+        return new KitConfigurationGenerator(config);
+    }
+
+    @Override
     protected void loadFrom(Configuration config) {
         kits.clear();
         kitNamesCache.clear();
@@ -68,12 +74,6 @@ public class KitModule extends SerializableModule {
         cooldowns.forEach((key, expires) -> cooldownsList.add(new KitCooldown(key.player, key.kit, expires)));
         config.set("cooldowns", cooldownsList);
         config.set("dropIfFull", dropIfFull);
-        config.setComments("dropIfFull", List.of(
-            "Any items from a kit which cannot fit into a player's inventory will be...",
-            "- true: dropped on the ground.",
-            "- false: ignored and destroyed.",
-            "You might want to consider disabling this if you are concerned about potential lag abuse."
-        ));
     }
 
     @Nullable
