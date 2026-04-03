@@ -56,11 +56,16 @@ public class NicknameModule extends SerializableModule implements Listener {
         config.set("nicknames", nicknamesList);
     }
 
+    private void setPlayerName(Player player, @Nullable Component newName) {
+        player.displayName(newName);
+        player.playerListName(newName);
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Component nick = getNickname(event.getPlayer());
         if (nick != null) {
-            event.getPlayer().displayName(nick);
+            setPlayerName(event.getPlayer(), nick);
         }
     }
 
@@ -86,14 +91,14 @@ public class NicknameModule extends SerializableModule implements Listener {
             nameComp = Component.text(nickname);
             plain = true;
         }
-        receiver.displayName(nameComp);
+        setPlayerName(receiver, nameComp);
         nicknames.put(receiver.getUniqueId(), new Nickname(receiver.getUniqueId(), nickname, plain));
         return nameComp;
     }
 
     public boolean clearNickname(Player player) {
         if (nicknames.remove(player.getUniqueId()) != null) {
-            player.displayName(Component.text(player.getName()));
+            setPlayerName(player, null);
             return true;
         }
         return false;
